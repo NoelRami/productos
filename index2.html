@@ -124,13 +124,9 @@
             barajar(productosBarajados); // Barajar el array
         }
 
-        // Si hemos llegado al final del array, reiniciar
+        // Si hemos llegado al final del array, reiniciar sin advertencia
         if (indiceProductoActual >= productosBarajados.length) {
-            alert("¡Has completado todos los productos! Reiniciando el juego.");
             indiceProductoActual = 0; // Reiniciar el índice
-            productosBarajados = []; // Reiniciar lista de productos barajados
-            iniciarJuego(); // Iniciar de nuevo
-            return; // Salir de la función
         }
 
         // Obtener el producto actual
@@ -161,7 +157,8 @@
 
     // Función para jugar otra vez
     function jugarOtraVez() {
-        indiceProductoActual = 0; // Reiniciar índice
+        // Reiniciar el índice
+        indiceProductoActual = 0; 
         iniciarJuego(); // Iniciar el juego de nuevo
     }
 
