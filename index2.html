@@ -102,16 +102,31 @@
         "pomelo granel": 62
     };
 
+    let productosKeys = Object.keys(productos);
+    let productosUsados = []; // Array para almacenar productos ya usados
     let productoActual = "";
     let numeroCorrecto = 0;
 
     // Función para iniciar el juego
     function iniciarJuego() {
-        const productosKeys = Object.keys(productos);
-        const indiceAleatorio = Math.floor(Math.random() * productosKeys.length);
-        productoActual = productosKeys[indiceAleatorio];
+        // Si todos los productos han sido usados, reiniciar el juego
+        if (productosUsados.length === productosKeys.length) {
+            alert("¡Has completado todos los productos! Reiniciando el juego.");
+            productosUsados = []; // Reiniciar lista de productos usados
+        }
+
+        // Seleccionar un producto aleatorio que no ha sido usado
+        let indiceAleatorio;
+        do {
+            indiceAleatorio = Math.floor(Math.random() * productosKeys.length);
+            productoActual = productosKeys[indiceAleatorio];
+        } while (productosUsados.includes(productoActual));
+
+        // Agregar el producto actual a la lista de productos usados
+        productosUsados.push(productoActual);
         numeroCorrecto = productos[productoActual];
 
+        // Actualizar el DOM
         document.getElementById("producto").textContent = productoActual;
         document.getElementById("resultado").textContent = ""; // Limpiar el resultado anterior
         document.getElementById("respuesta").value = ""; // Limpiar el input
