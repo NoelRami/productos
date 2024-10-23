@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>¿Cuál es el número?</h1>
+    <p id="producto"></p>
+    <input type="number" id="respuesta" placeholder="Introduce el número">
+    <button onclick="verificarRespuesta()">Verificar</button>
+    <div class="result" id="resultado"></div>
+    <button onclick="jugarOtraVez()">Jugar otra vez</button>
+</div>
+
+<script>
+    // Lista de productos y sus números
+    const productos = {
+        "aguacate pieza": 977, 
+        "banana granel": 42, 
+        "melon bollo piel sapo": 49, 
+        "eco platano granel": 507, 
+        "kiwi gold pieza": 82, 
+        "limon granel": 176, 
+        "mango pieza": 61, 
+        "manzana golden granel": 48,
+        "manzana roja granel": 848, 
+        "naranjas de mesa granel": 158, 
+        "pera conferencia granel": 58, 
+        "piña granel": 47, 
+        "platano de canarias granel": 111,
+        "mandarina granel": 123,
+        "pomelo granel": 62
+    };
+
+    let productoActual = "";
+    let numeroCorrecto = 0;
+
+    // Función para iniciar el juego
+    function iniciarJuego() {
+        const productosKeys = Object.keys(productos);
+        const indiceAleatorio = Math.floor(Math.random() * productosKeys.length);
+        productoActual = productosKeys[indiceAleatorio];
+        numeroCorrecto = productos[productoActual];
+
+        document.getElementById("producto").textContent = productoActual;
+        document.getElementById("resultado").textContent = ""; // Limpiar el resultado anterior
+        document.getElementById("respuesta").value = ""; // Limpiar el input
+    }
+
+    // Función para verificar la respuesta
+    function verificarRespuesta() {
+        const respuesta = document.getElementById("respuesta").value;
+        const resultadoDiv = document.getElementById("resultado");
+
+        if (parseInt(respuesta) === numeroCorrecto) {
+            resultadoDiv.textContent = "¡Correcto!";
+            resultadoDiv.className = "result correct";
+        } else {
+            resultadoDiv.textContent = `Incorrecto. El número correcto es: ${numeroCorrecto}`;
+            resultadoDiv.className = "result incorrect";
+        }
+    }
+
+    // Función para jugar otra vez
+    function jugarOtraVez() {
+        iniciarJuego();
+    }
+
+    // Iniciar el juego por primera vez
+    window.onload = iniciarJuego;
+</script>
+
+</body>
+</html>
