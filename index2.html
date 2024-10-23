@@ -103,27 +103,38 @@
     };
 
     let productosKeys = Object.keys(productos);
-    let productosUsados = []; // Array para almacenar productos ya usados
+    let productosBarajados = []; // Array para almacenar los productos barajados
+    let indiceProductoActual = 0; // Índice del producto actual
     let productoActual = "";
     let numeroCorrecto = 0;
 
+    // Función para barajar el array de productos
+    function barajar(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Intercambiar elementos
+        }
+    }
+
     // Función para iniciar el juego
     function iniciarJuego() {
-        // Si todos los productos han sido usados, reiniciar el juego
-        if (productosUsados.length === productosKeys.length) {
-            alert("¡Has completado todos los productos! Reiniciando el juego.");
-            productosUsados = []; // Reiniciar lista de productos usados
+        // Barajar los productos solo al iniciar el juego
+        if (productosBarajados.length === 0) {
+            productosBarajados = [...productosKeys]; // Copiar las claves de productos
+            barajar(productosBarajados); // Barajar el array
         }
 
-        // Seleccionar un producto aleatorio que no ha sido usado
-        let indiceAleatorio;
-        do {
-            indiceAleatorio = Math.floor(Math.random() * productosKeys.length);
-            productoActual = productosKeys[indiceAleatorio];
-        } while (productosUsados.includes(productoActual));
+        // Si hemos llegado al final del array, reiniciar
+        if (indiceProductoActual >= productosBarajados.length) {
+            alert("¡Has completado todos los productos! Reiniciando el juego.");
+            indiceProductoActual = 0; // Reiniciar el índice
+            productosBarajados = []; // Reiniciar lista de productos barajados
+            iniciarJuego(); // Iniciar de nuevo
+            return; // Salir de la función
+        }
 
-        // Agregar el producto actual a la lista de productos usados
-        productosUsados.push(productoActual);
+        // Obtener el producto actual
+        productoActual = productosBarajados[indiceProductoActual];
         numeroCorrecto = productos[productoActual];
 
         // Actualizar el DOM
@@ -140,6 +151,8 @@
         if (parseInt(respuesta) === numeroCorrecto) {
             resultadoDiv.textContent = "¡Correcto!";
             resultadoDiv.className = "result correct";
+            indiceProductoActual++; // Aumentar el índice solo si es correcto
+            iniciarJuego(); // Cargar el siguiente producto
         } else {
             resultadoDiv.textContent = `Incorrecto. El número correcto es: ${numeroCorrecto}`;
             resultadoDiv.className = "result incorrect";
@@ -148,7 +161,8 @@
 
     // Función para jugar otra vez
     function jugarOtraVez() {
-        iniciarJuego();
+        indiceProductoActual = 0; // Reiniciar índice
+        iniciarJuego(); // Iniciar el juego de nuevo
     }
 
     // Iniciar el juego por primera vez
